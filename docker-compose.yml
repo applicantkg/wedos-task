@@ -6,7 +6,6 @@ services:
         context: build/
       ports:
         - "8080:8080"
- 
     db:
       image: postgres:12
       container_name: db
@@ -19,6 +18,15 @@ services:
         POSTGRES_DB: wedos
       ports:
         - "5432:5432"
+    nginx-exporter:
+      image: nginx/nginx-prometheus-exporter:0.10.0
+      container_name: nginx-exporter
+      restart: unless-stopped
+      environment:
+        - SCRAPE_URI=http://3.84.32.96:8080/nginx_status
+      ports:
+        - "9113:9113"
+
 volumes:
   data:
     name: data
